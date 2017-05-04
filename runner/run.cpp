@@ -20,7 +20,7 @@ int main(int argc, char * argv[])
 
 	fclose(stdin);
 	fclose(stdout);
-
+	
 	std::fstream output(FILENAME ".log");
 	std::fstream reference(FILENAME ".ans");
 
@@ -46,12 +46,12 @@ int main(int argc, char * argv[])
 		}
 
 		std::string buf1, buf2;
-		reference >> buf1;
-		output >> buf2;
+		std::getline(reference, buf1);
+		std::getline(output, buf2);
 
 		if (buf1 != buf2)
 		{
-			fprintf(stderr, "Error at line: %d: '%s' != '%s'\n", line, buf1.c_str(), buf2.c_str());
+			fprintf(stderr, "Error at line %d: '%s' != '%s'\n", line, buf1.c_str(), buf2.c_str());
 			return 1;
 		}
 
@@ -63,7 +63,7 @@ int main(int argc, char * argv[])
 		fprintf(stderr, "Output is longer than expected\n");
 		return 1;
 	}
-
+	
 	auto time = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count());
 	fprintf(stderr, "Test passed %.2f ms\n", time / 1000);
 
